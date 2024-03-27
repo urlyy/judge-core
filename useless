@@ -1,0 +1,162 @@
+#!/bin/bash
+
+# 半成品shell，无用，留作纪念
+
+
+
+
+
+
+
+# remove_last_empty_line(){
+#     local file=$1
+#     awk 'NR>1{print p} {p=$0} END{printf "%s", p}' "$file" > temp.txt
+#     mv temp.txt "$file"
+# }
+
+# my_diff(){
+#     if [ -z "$special" ] || [ "$special" != "true" ]; then
+#         # echo "没有传入special参数或不是special"
+#         diff -B "$output_file" "$expected_file" > /dev/null
+#         return $?
+#     else
+#         echo "special参数的值为: $special"
+#     fi
+# }
+
+# judge(){
+#     local program=$1
+#     local input_file=$2
+#     local expected_file=$3
+#     local filename=$(basename "$input_file")
+#     local output_file="$out_dir/$filename"
+#     run_duration=0
+#     run_memory=0
+#     # 记录开始时间
+#     local start_time=$(date +%s%N)
+#     run_log=""
+#     ./$executable < $input_file > $output_file
+#     # 运行并监听内存消耗
+#     # 最内层嵌套将程序执行结果放入output
+#     # 创建一个临时文件方便获得运行结果
+#     tempfile=$(mktemp)
+#     run_cmd="
+#         # 限制内存大小
+#         ulimit -v $mem_out; 
+#         "$line" >> "$file";
+#         // 获得空间消耗
+#         /usr/bin/time -v ./$executable < $input_file > $output_file;
+#         run_res=$?;
+#         echo \"Your string\" > ./kankan;
+#         # echo \"子进程的PID是:$$\" > ./kankan;
+#         # 创建一个临时文件
+#         tempfile=$(mktemp);
+#         # 向临时文件写入数据
+#         echo "$run_res" > "$tempfile";
+#     "
+#     local run_detail=$(/usr/bin/time -v  sh -c "$run_cmd" 2>&1)
+#     run_res=$(<"$tempfile");
+#     # 删除临时文件
+#     rm "$tempfile"
+#     # run_detail=$(/usr/bin/time -v timeout "${time_out}ms" sh -c "ulimit -v $mem_out; ./$executable < $input_file > $output_file" 2>&1)
+#     # 记录结束时间
+#     local end_time=$(date +%s%N)
+#     if (( run_res == 134 )); then
+#         run_log="执行${filename}时运行错误"
+#         return 5
+#     fi
+#     # 计算执行时间（以毫秒为单位）
+#     run_duration=$((($end_time - $start_time)/1000000))
+#     if [ $run_duration -gt $time_out ]; then
+#         run_log="执行${filename}时时间超限"
+#         return 3
+#     fi
+#     # # 读取消耗内存
+#     run_memory=$(echo "$run_detail" | grep -o "Maximum resident set size (kbytes): [0-9]*" | awk '{print $NF}')
+#     if [ $run_memory -gt $mem_out ]; then
+#         # run_log="执行${filename}时内存超限"
+#         run_log="内存超限"
+#         return 4
+#     fi
+#     # # 继续处理
+#     remove_last_empty_line "$output_file"
+#     # # 比较输出与预期输出
+#     my_diff "$output_file" "$expected_file"
+#     diff_res=$?
+#     if [ $diff_res -eq 1 ]; then
+#         # run_log="执行${filename}时答案错误"
+#         run_log="答案错误"
+#         return 2
+#     fi
+#     return 0
+# }
+
+# # 返回0是没问题，1是有问题
+# # echo ((编译结果,编译输出),(用例id1，判题结果，判题输出，时间(ms),内存(KB)),(用例id1(错误)，判题结果，判题输出))
+# # 答案正确0
+# # 编译错误1
+# # 答案错误2
+# # 运行超限3
+# # 内存超限4
+# # 运行错误5
+# main() {
+#     echo "主进程的PID是: $$";
+#     mkdir $out_dir
+#     # 先编译
+#     compile $code_file
+#     if [ $compile_res -ne 0 ] ; then
+#         rm -rf $out_dir
+#         # echo "编译错误"
+#         return 1
+#     fi
+#     res=()
+#     # # 遍历输入文件
+#     for input_file in $input_dir/*; do
+#         # 提取文件名和扩展名
+#         filename=$(basename "$input_file")
+#         # in和out文件必须同名
+#         judge "./program" "$input_file" "$expected_dir/$filename"
+#         judge_res=$?
+#         # 遇到错误就返回
+#         if [ $judge_res -ne 0 ]; then
+#             res+=($filename,$judge_res,$run_log)
+#             rm -rf program
+#             rm -rf $out_dir
+#             return $judge_res
+#         else
+#             res+=($filename,$judge_res,$run_log,$run_duration,$run_memory)
+#         fi
+#     done
+#     rm -rf program
+#     rm -rf $out_dir
+#     return 0
+# }
+
+
+# # code_file=$1
+# # input_dir=$2
+# # expected_dir=$3
+# # time_out=$4
+# # mem_out=$5
+# # special=$6
+# # special_dir=$7
+# code_file="test.cpp"
+# input_dir="in"
+# expected_dir="expect"
+# out_dir="true_out"
+# # s->ms, mb->kb
+# time_out=$(expr 1 \* 1000)
+# mem_out=$(expr 128 \* 1024)
+# # mem_out=1000
+# special="false"
+# special_dir="special"
+# main   
+# if [ $compile_res -ne 0 ]; then
+#     echo "编译错误"
+#     echo $compile_log
+# else
+#     for item in "${res[@]}"
+#     do
+#         echo $item
+#     done
+# fi
